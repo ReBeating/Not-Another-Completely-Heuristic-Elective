@@ -1,41 +1,50 @@
 <template>
     <div>
-        <el-row>{{course.name}}</el-row>
+        <el-row :span="24"><h1>{{course.name}}</h1></el-row>
         <el-row>
-            <el-col>课程编号</el-col><el-col>{{course.course_id}}</el-col>
+            <el-col :span="12">课程编号</el-col><el-col :span="12">{{course.course_id}}</el-col>
         </el-row>
         <el-row>
-            <el-col>课程类别</el-col>
-            <el-col>
-                {{Mainclass[course.main_class+1]}}
+            <el-col :span="12">课程类别</el-col>
+            <el-col :span="12">
+                {{Mainclass[course.main_class-1]}}
             </el-col>
         </el-row>
         <el-row>
-            <el-col>课程学分</el-col><el-col>{{course.credit}}</el-col>
+            <el-col :span="12">课程学分</el-col><el-col :span="12">{{course.credit}}</el-col>
         </el-row>
         <el-row>
-            <el-col>开课院系</el-col><el-col>{{course.dept}}</el-col>
+            <el-col :span="12">开课院系</el-col><el-col :span="12">信科</el-col>
         </el-row>
         <el-row>
-            <el-col>任课老师</el-col><el-col>{{course.lecturer}}</el-col>
+            <el-col :span="12">任课老师</el-col><el-col :span="12">{{course.lecturer}}</el-col>
         </el-row>
         <el-row>
-            <el-col>上课地点</el-col><el-col>{{course.pos}}</el-col>
+            <el-col :span="12">上课地点</el-col><el-col :span="12">{{course.pos}}</el-col>
         </el-row>
         <el-row>
-            <el-col>上课时间</el-col>
-            <el-col v-for ="(time,timeIndex) in course.times" :key="timeIndex">
-                {{date[time.day+1]}}
+            <el-col :span="12">上课时间</el-col>
+            <el-col :span="6" v-for ="(time,timeIndex) in course.times" :key="timeIndex">
+                {{date[time.day-1]}}
                 <div v-for ="(lesson,lessonIndex) in time.period" :key="lessonIndex">
-                {{lessons[lesson+1]}}
+                {{lessons[lesson-1]}}
                 </div>
             </el-col>
         </el-row>
         <el-row>
-            <el-col>详细描述</el-col><el-col>{{course.detail}}</el-col>
+            <el-col :span="12">详细描述</el-col><el-col :span="12">{{course.detail}}</el-col>
         </el-row>
     </div>
 </template>
+
+<style>
+  .el-row {
+    margin-bottom: 40px;
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+</style>
 
 <script>
 import axios from 'axios'
