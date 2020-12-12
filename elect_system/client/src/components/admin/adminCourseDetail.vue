@@ -1,38 +1,39 @@
 <template>
     <div>
-        <v-row>{{course.name}}</v-row>
-        <v-row>
-            <v-col>课程编号</v-col><v-col>{{this.course.course_id}}</v-col>
-        </v-row>
-        <v-row>
-            <v-col>课程类别</v-col>
-            <v-col>
-                <div v-if="this.course.main_class===1">专业课</div>
-                <div v-if="this.course.main_class===2">通选课</div>
-                <div v-if="this.course.main_class===3">体育课</div>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>课程学分</v-col><v-col>{{this.course.credit}}</v-col>
-        </v-row>
-        <v-row>
-            <v-col>开课院系</v-col><v-col>{{this.course.dept}}</v-col>
-        </v-row>
-        <v-row>
-            <v-col>任课老师</v-col><v-col>{{this.course.lecturer}}</v-col>
-        </v-row>
-        <v-row>
-            <v-col>上课地点</v-col><v-col>{{this.course.pos}}</v-col>
-        </v-row>
-        <v-row>
-            <v-col>上课时间</v-col>
-            <v-col v-for ="time in this.course.times" :key="item.day" :value="item.period">
-                {{time.day}} : {{time.period}}
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>详细描述</v-col><v-col>{{this.course.detail}}</v-col>
-        </v-row>
+        <el-row>{{course.name}}</el-row>
+        <el-row>
+            <el-col>课程编号</el-col><el-col>{{course.course_id}}</el-col>
+        </el-row>
+        <el-row>
+            <el-col>课程类别</el-col>
+            <el-col>
+                {{Mainclass[course.main_class+1]}}
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col>课程学分</el-col><el-col>{{course.credit}}</el-col>
+        </el-row>
+        <el-row>
+            <el-col>开课院系</el-col><el-col>{{course.dept}}</el-col>
+        </el-row>
+        <el-row>
+            <el-col>任课老师</el-col><el-col>{{course.lecturer}}</el-col>
+        </el-row>
+        <el-row>
+            <el-col>上课地点</el-col><el-col>{{course.pos}}</el-col>
+        </el-row>
+        <el-row>
+            <el-col>上课时间</el-col>
+            <el-col v-for ="(time,timeIndex) in course.times" :key="timeIndex">
+                {{date[time.day+1]}}
+                <div v-for ="(lesson,lessonIndex) in time.period" :key="lessonIndex">
+                {{lessons[lesson+1]}}
+                </div>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col>详细描述</el-col><el-col>{{course.detail}}</el-col>
+        </el-row>
     </div>
 </template>
 
@@ -40,11 +41,11 @@
 import axios from 'axios'
 export default {
     mounted () {
-        axios.get('http://localhost:8000/courses/1233343', {}).then(response => (this.course = response.course))
+        //axios.get('http://localhost:8000/courses/'+this.$route.params.id, {}).then(response => (course = response.course))
     },
     data () {
         return {
-            course : {
+            course: {
                 "course_id": 1233343,   // From elective.pku.edu.cn
                 // "class_no": 1,
                 "name": "软件工程",
@@ -61,7 +62,37 @@ export default {
                 "detail": "About software developing...",     // 详细的文字描述
                 "elect_status": 0,    // none / pending / elected
                 // "willpoint": 99, feature: 在详情页选课
-            }
+            },
+            lessons: [
+                '08:00-08:50',
+                '09:00-09:50',
+                '10:10-11:00',
+                '11:10-12:00',
+                '13:00-13:50',
+                '14:00-14:50',
+                '15:10-16:00',
+                '16:10-17:00',
+                '17:10-18:00',
+                '18:40-19:30',
+                '19:40-20:30',
+                '20:40-21:30'
+            ],
+            date: [
+                '周一',
+                '周二',
+                '周三',
+                '周四',
+                '周五',
+                '周六',
+                '周日'
+            ],
+            Mainclass: [
+                '专业课',
+                '政治课',
+                '体育课',
+                '英语课',
+                '通选课'
+            ]
         }
     }
 }
